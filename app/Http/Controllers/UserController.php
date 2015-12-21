@@ -11,6 +11,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use MyBlog\Repositories\UserRepository;
 
 class UserController extends Controller
@@ -33,8 +35,11 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        App::setLocale($request['lang']);
+
         $users = $this->userRepository
             ->getAgeLargerThan(10);
 
