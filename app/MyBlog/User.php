@@ -2,14 +2,13 @@
 
 namespace MyBlog;
 
-use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Support\Facades\App;
 
 class User extends Model implements AuthenticatableContract,
@@ -39,18 +38,25 @@ class User extends Model implements AuthenticatableContract,
      */
     protected $hidden = ['password', 'remember_token'];
 
-    public function getCreatedAtAttribute($value)
+
+    /**
+     * [created_at]的mutator
+     *
+     * @param $value
+     * @return string
+     */
+    public function getCreatedAtAttribute($value): string
     {
         $locale = App::getLocale();
 
         $date = $this->asDateTime($value);
 
         if ($locale === 'uk') {
-            return $date->format('d, M, Y');
-        } else if ($locale == 'tw') {
-            return $date->format('Y, m, d');
+            return $date->format('d M, Y');
+        } elseif ($locale === 'tw') {
+            return $date->format('Y/m/d');
         } else {
-            return $date->format('M, d, Y');
+            return $date->format('M d, Y');
         }
     }
 }
